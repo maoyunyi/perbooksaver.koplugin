@@ -1,4 +1,4 @@
-# AutoScreensaver
+# PerBookSaver（本书屏保）
 
 **给 KOReader 的每一本书单独指定待机屏保；没有单独设置的书，一律沿用全局屏保。**
 
@@ -34,8 +34,8 @@ KOReader 自带一套全局屏保（睡眠时显示什么）。本插件在它�
 
 ## 安装
 
-1. 下载本仓库，得到 `autoscreensaver.koplugin` 文件夹 —— **目录名必须以 `.koplugin` 结尾**，
-   否则 KOReader 不会加载它。
+1. 下载或克隆本仓库。插件本体就是其中的 `perbooksaver.koplugin` 文件夹 ——
+   **目录名必须以 `.koplugin` 结尾**，否则 KOReader 不会加载它。
 2. 把整个文件夹复制进 KOReader 的插件目录：
 
    | 平台 | 插件目录 |
@@ -46,11 +46,12 @@ KOReader 自带一套全局屏保（睡眠时显示什么）。本插件在它�
 
 3. **重启 KOReader**：文件管理器 → 顶部菜单 → 「退出」组 → 「重启 KOReader」。
 
-也可以直接克隆（把仓库地址换成你自己的）：
+也可以在终端里做完（把仓库地址换成你自己的）：
 
 ```bash
-cd koreader/plugins
-git clone https://github.com/<your-name>/<your-repo>.git autoscreensaver.koplugin
+git clone --depth 1 https://github.com/<your-name>/<your-repo>.git /tmp/perbooksaver
+cp -r /tmp/perbooksaver/perbooksaver.koplugin <koreader数据目录>/plugins/
+rm -rf /tmp/perbooksaver
 ```
 
 ## 使用方法
@@ -104,7 +105,7 @@ git clone https://github.com/<your-name>/<your-repo>.git autoscreensaver.koplugi
 
 - **菜单里没有「本书屏保」** —— 确认目录名以 `.koplugin` 结尾并已重启 KOReader；
   再到 设置 → 工具 → 插件管理 看插件是否被停用。
-- **设置了但待机没变化** —— 在 `crash.log` 里搜 `AutoScreensaver`。资源不可用会打 warn 并回落全局。
+- **设置了但待机没变化** —— 在 `crash.log` 里搜 `PerBookSaver`。资源不可用会打 warn 并回落全局。
 - **会改到我的全局屏保设置吗** —— 不会。详见下面的「工作原理」。
 - **切换模式要重启吗** —— 不用，选完立即生效。
 - **这本书有 `exclude_screensaver` 标记会怎样** —— 那是 KOReader 自己的文档级设置，官方会把它和
@@ -112,7 +113,7 @@ git clone https://github.com/<your-name>/<your-repo>.git autoscreensaver.koplugi
 
 ## 卸载
 
-删掉 `plugins/autoscreensaver.koplugin/` 目录并重启 KOReader。
+删掉 `plugins/perbooksaver.koplugin/` 目录并重启 KOReader。
 残留的 `settings/perbook_screensaver.json` 可以一并删掉（留着也无害）。
 
 ## 工作原理
@@ -132,4 +133,4 @@ git clone https://github.com/<your-name>/<your-repo>.git autoscreensaver.koplugi
 
 ## License
 
-尚未指定。建议在发布前自行选一个许可证（例如 MIT、GPL-3.0）并在仓库根目录添加 `LICENSE` 文件。
+本项目采用 [MIT 许可证](LICENSE) © 2026 m40kao。

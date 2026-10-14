@@ -1,4 +1,4 @@
-# AutoScreensaver
+# PerBookSaver
 
 **Per-book standby screensaver for KOReader.** Give each book its own screensaver; books you never configure keep using the global one.
 
@@ -38,9 +38,10 @@ never touches the global one.**
 
 ## Installation
 
-1. Download this repository and locate the `autoscreensaver.koplugin` folder —
-   **the folder name must end with `.koplugin`**, otherwise KOReader will not load it.
-2. Copy the whole folder into KOReader's plugin directory:
+1. Download or clone this repository. The plugin itself is the `perbooksaver.koplugin`
+   folder — **the folder name must end with `.koplugin`**, otherwise KOReader will not
+   load it.
+2. Copy that whole folder into KOReader's plugin directory:
 
    | Platform | Plugin directory |
    | --- | --- |
@@ -50,11 +51,12 @@ never touches the global one.**
 
 3. **Restart KOReader**: File manager → top menu → "Exit" section → "Restart KOReader".
 
-Or clone it directly (replace the URL with your own repository):
+Or, from a shell (replace the URL with your own repository):
 
 ```bash
-cd koreader/plugins
-git clone https://github.com/<your-name>/<your-repo>.git autoscreensaver.koplugin
+git clone --depth 1 https://github.com/<your-name>/<your-repo>.git /tmp/perbooksaver
+cp -r /tmp/perbooksaver/perbooksaver.koplugin <koreader-data>/plugins/
+rm -rf /tmp/perbooksaver
 ```
 
 ## Usage
@@ -116,7 +118,7 @@ Keys are absolute book paths; `kind` is one of `cover` / `image` / `folder` / `d
   `.koplugin` and that you restarted KOReader. Also check Settings → Tools → Plugin
   management to see whether the plugin is disabled.
 - **Settings saved, but nothing changes on sleep** — search `crash.log` for
-  `AutoScreensaver`. Unusable resources log a warning and fall back to global.
+  `PerBookSaver`. Unusable resources log a warning and fall back to global.
 - **Will this alter my global screensaver settings?** — No. See "How it works" below.
 - **Do I need to restart after switching modes?** — No, changes apply immediately.
 - **What if a book is flagged `exclude_screensaver`?** — That is KOReader's own
@@ -128,7 +130,7 @@ Keys are absolute book paths; `kind` is one of `cover` / `image` / `folder` / `d
 
 ## Uninstall
 
-Delete the `plugins/autoscreensaver.koplugin/` folder and restart KOReader.
+Delete the `plugins/perbooksaver.koplugin/` folder and restart KOReader.
 You may also delete the leftover `settings/perbook_screensaver.json` (harmless either way).
 
 ## How it works
@@ -153,5 +155,4 @@ that approach.
 
 ## License
 
-Not specified yet. Pick a license (MIT, GPL-3.0, …) and add a `LICENSE` file at the
-repository root before publishing.
+Released under the [MIT License](LICENSE) © 2026 m40kao.

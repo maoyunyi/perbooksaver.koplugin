@@ -1,5 +1,5 @@
 --[[
- * KOReader 插件 · AutoScreensaver —— 逐本书待机屏保   v1.1.0
+ * KOReader 插件 · PerBookSaver（本书屏保）—— 逐本书待机屏保   v1.2.0
  *
  * 【功能】
  *   在官方「睡眠屏保」体系之上，为单本书指定屏保图片。没有单独设置的书籍一律使用
@@ -47,7 +47,7 @@
  *
  * 【安装】
  *   目录名必须以 .koplugin 结尾：
- *     /mnt/us/koreader/plugins/autoscreensaver.koplugin/{main.lua,_meta.lua}
+ *     /mnt/us/koreader/plugins/perbooksaver.koplugin/{main.lua,_meta.lua}
  *   放好后重启 KOReader。菜单入口：设置 → 屏保（睡眠屏保）面板内的第一项。
 ]]
 
@@ -65,15 +65,15 @@ local logger = require("logger")
 local _ = require("gettext")
 local T = require("ffi/util").template
 
-local AutoScreensaver = WidgetContainer:extend{
-    name = "AutoScreensaver",
+local PerBookSaver = WidgetContainer:extend{
+    name = "perbooksaver",
     is_doc_only = false,
 }
 
 local STORE_FILE = "perbook_screensaver.json"
 local STORE_VERSION = 1
-local GROUP_MARK = "autoscreensaver_group"
-local PATCH_MARK = "_autoscreensaver_patched"
+local GROUP_MARK = "perbooksaver_group"
+local PATCH_MARK = "_perbooksaver_patched"
 
 -- ===========================================================================
 -- 小工具
@@ -131,7 +131,7 @@ local function read_store()
     if ok and type(data) == "table" and type(data.books) == "table" then
         db.books = data.books
     elseif not ok then
-        logger.warn("AutoScreensaver: 无法解析配置，已按空配置处理：", store_path())
+        logger.warn("PerBookSaver: 无法解析配置，已按空配置处理：", store_path())
     end
     return db
 end
@@ -139,12 +139,12 @@ end
 local function write_store(db)
     local ok, encoded = pcall(json.encode, db)
     if not ok or type(encoded) ~= "string" then
-        logger.warn("AutoScreensaver: 配置序列化失败")
+        logger.warn("PerBookSaver: 配置序列化失败")
         return false
     end
     local file = io.open(store_path(), "w")
     if not file then
-        logger.warn("AutoScreensaver: 配置写入失败：", store_path())
+        logger.warn("PerBookSaver: 配置写入失败：", store_path())
         return false
     end
     file:write(encoded)
@@ -236,7 +236,7 @@ local function active_overrides()
     local entry = Store.get(path)
     if not entry then return nil end
     if not entry_is_usable(entry) then
-        logger.warn("AutoScreensaver: 本书屏保资源不可用，回退全局：", path, entry.kind, entry.path)
+        logger.warn("PerBookSaver: 本书屏保资源不可用，回退全局：", path, entry.kind, entry.path)
         return nil
     end
     return overrides_for(entry)
@@ -268,7 +268,7 @@ end
 local function install_patch()
     if Screensaver[PATCH_MARK] then return end
     if type(Screensaver.setup) ~= "function" then
-        logger.warn("AutoScreensaver: 找不到 Screensaver.setup()，插件未生效")
+        logger.warn("PerBookSaver: 找不到 Screensaver.setup()，插件未生效")
         return
     end
     Screensaver[PATCH_MARK] = true
@@ -280,7 +280,7 @@ local function install_patch()
             saved = swap_in(active_overrides())
         end)
         if not ok_swap then
-            logger.warn("AutoScreensaver: 应用本书屏保失败，改用全局设置：", swap_err)
+            logger.warn("PerBookSaver: 应用本书屏保失败，改用全局设置：", swap_err)
             saved = nil
         end
 
@@ -289,7 +289,7 @@ local function install_patch()
         if saved then
             local ok_restore, restore_err = pcall(restore_all, saved)
             if not ok_restore then
-                logger.warn("AutoScreensaver: 还原全局设置失败：", restore_err)
+                logger.warn("PerBookSaver: 还原全局设置失败：", restore_err)
             end
         end
 
@@ -534,19 +534,19 @@ end
 -- 插件入口
 -- ===========================================================================
 
-function AutoScreensaver:init()
+function PerBookSaver:init()
     -- 拦截 Screensaver:setup()，尽早装上，避免首次睡眠时还没生效
     install_patch()
 
     if self.ui and self.ui.menu and self.ui.menu.registerToMainMenu then
         local ok, err = pcall(self.ui.menu.registerToMainMenu, self.ui.menu, self)
         if not ok then
-            logger.warn("AutoScreensaver: 菜单注册失败：", err)
+            logger.warn("PerBookSaver: 菜单注册失败：", err)
         end
     end
 end
 
-function AutoScreensaver:addToMainMenu(menu_items)
+function PerBookSaver:addToMainMenu(menu_items)
     local screensaver = menu_items and menu_items.screensaver
     if type(screensaver) ~= "table" then return end
 
@@ -574,4 +574,4 @@ function AutoScreensaver:addToMainMenu(menu_items)
     end
 end
 
-return AutoScreensaver
+return PerBookSaver
