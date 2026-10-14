@@ -46,13 +46,6 @@ KOReader 自带一套全局屏保（睡眠时显示什么）。本插件在它�
 
 3. **重启 KOReader**：文件管理器 → 顶部菜单 → 「退出」组 → 「重启 KOReader」。
 
-也可以在终端里做完（把仓库地址换成你自己的）：
-
-```bash
-git clone --depth 1 https://github.com/<your-name>/<your-repo>.git /tmp/perbooksaver
-cp -r /tmp/perbooksaver/perbooksaver.koplugin <koreader数据目录>/plugins/
-rm -rf /tmp/perbooksaver
-```
 
 ## 使用方法
 
