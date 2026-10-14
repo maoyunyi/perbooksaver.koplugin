@@ -51,14 +51,6 @@ never touches the global one.**
 
 3. **Restart KOReader**: File manager → top menu → "Exit" section → "Restart KOReader".
 
-Or, from a shell (replace the URL with your own repository):
-
-```bash
-git clone --depth 1 https://github.com/<your-name>/<your-repo>.git /tmp/perbooksaver
-cp -r /tmp/perbooksaver/perbooksaver.koplugin <koreader-data>/plugins/
-rm -rf /tmp/perbooksaver
-```
-
 ## Usage
 
 Open any book → **Settings → Screensaver**. The **first group** in the panel is
